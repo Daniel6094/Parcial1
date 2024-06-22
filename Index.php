@@ -118,6 +118,10 @@
     <div class="container">
         <h2>Reservaciones</h2>
         <?php
+
+        define("ARCHIVO_RESERVACIONES","reservaciones.txt" );
+
+
         if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
             $hotel = isset($_POST['hotel']) ? htmlspecialchars($_POST['hotel']) : '';
             $nombre = isset($_POST['nombre']) ? htmlspecialchars($_POST['nombre']) : '';
@@ -131,14 +135,14 @@
                 echo "<p style='color:red;'>Todos los campos son requeridos.</p>";
             } else {
                 $reservacion = "$hotel,$nombre,$apellido,$telefono,$fechaReservacion,$observaciones\n";
-                file_put_contents("reservaciones.txt", $reservacion, FILE_APPEND);
+                file_put_contents(ARCHIVO_RESERVACIONES, $reservacion, FILE_APPEND);
                 echo "<p style='color:green;'>Reservación realizada con éxito.</p>";
             }
         }
 
         // Leer y mostrar las reservaciones
-        if (file_exists("reservaciones.txt")) {
-            $reservaciones = file("reservaciones.txt", FILE_IGNORE_NEW_LINES);
+        if (file_exists(ARCHIVO_RESERVACIONES)) {
+            $reservaciones = file(ARCHIVO_RESERVACIONES, FILE_IGNORE_NEW_LINES);
             if (!empty($reservaciones)) {
                 echo "<table>
                         <tr>
